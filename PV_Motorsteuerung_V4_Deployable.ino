@@ -78,6 +78,7 @@ void loop()
   DateTime now = rtc.now(); 
   // Measure Distance
   float distance = distance_measure(TRIG_PIN, ECHO_PIN);
+
   
   //OLED Display
   oled(distance);
@@ -89,7 +90,7 @@ void loop()
     if(distance >= 10.0)
     {
       // Activate the motor for 3 minutes
-      while(distance_3 = distance_measure(TRIG_PIN, ECHO_PIN)<= 25)
+      while(distance_3 = distance_measure(TRIG_PIN, ECHO_PIN)>= 25)
       {
         motor_R();
         oled(distance_3);
@@ -107,7 +108,7 @@ void loop()
     if(distance >= 10.0)
     {
       // Activate the motor for 3 minutes
-      while(distance_4 = distance_measure(TRIG_PIN, ECHO_PIN)<= 17)
+      while(distance_4 = distance_measure(TRIG_PIN, ECHO_PIN)>= 17)
       {
         motor_R();
         oled(distance_4);
@@ -125,7 +126,7 @@ void loop()
     if(distance >= 10.0)
     {
       // Activate the motor for 3 minutes
-      while(distance_5 = distance_measure(TRIG_PIN, ECHO_PIN)<= 11)
+      while(distance_5 = distance_measure(TRIG_PIN, ECHO_PIN)>= 11)
       {
         motor_R();
         oled(distance_5);

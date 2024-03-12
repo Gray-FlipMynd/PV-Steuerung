@@ -86,13 +86,14 @@ void loop()
   // Check if it's 12:00, 14:00, or 15:00
   if (now.hour() == 12 && now.minute() == 0)
   {
-    float distance_3 = 0.0;
+    float distance_3 = distance;
     if(distance >= 10.0)
     {
       // Activate the motor for 3 minutes
-      while(distance_3 = distance_measure(TRIG_PIN, ECHO_PIN)>= 25)
+      while(distance_3 >= 25)
       {
         motor_R();
+        distance_3 = distance_measure(TRIG_PIN, ECHO_PIN);
         oled(distance_3);
       }
      
@@ -104,7 +105,7 @@ void loop()
   // Check if it's 12:00, 14:00, or 15:00
   if (now.hour() == 14 && now.minute() == 0)
   {
-    float distance_4 = 0.0;
+    float distance_4 = distance;
     if(distance >= 10.0)
     {
       // Activate the motor for 3 minutes
@@ -122,7 +123,7 @@ void loop()
   // Check if it's 12:00, 14:00, or 15:00
   if (now.hour() == 15 && now.minute() == 0)
   {
-    float distance_5 = 0.0;
+    float distance_5 = distance;
     if(distance >= 10.0)
     {
       // Activate the motor for 3 minutes
@@ -140,7 +141,7 @@ void loop()
   // Check if it's 20:00
   if (now.hour() == 20 && now.minute() == 0) 
   {
-    float distance_2 = 0.0;
+    float distance_2 = distance;
     // Activate the motor for X minutes to turn it back until distance of 80cm is reached
     while(distance_2 = distance_measure(TRIG_PIN, ECHO_PIN)<= 35)
     {  

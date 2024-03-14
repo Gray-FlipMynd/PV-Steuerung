@@ -95,6 +95,7 @@ void loop()
         motor_R();
         distance_3 = distance_measure(TRIG_PIN, ECHO_PIN);
         oled(distance_3);
+        delay(100);
       }
      
     }
@@ -113,6 +114,7 @@ void loop()
       {
         motor_R();
         oled(distance_4);
+        delay(100);
       }
      
     }
@@ -131,6 +133,7 @@ void loop()
       {
         motor_R();
         oled(distance_5);
+        delay(100);
       }
      
     }
@@ -147,6 +150,7 @@ void loop()
     {  
       motor_L();  // Change the value (0-255) for different speeds on the left motor
       oled(distance_2);
+      delay(100);
     }
     // Turn off the motor
     motor_stop();

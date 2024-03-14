@@ -162,10 +162,10 @@ float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
 {
   //Trigger Signal aus
   digitalWrite(TRIG_PIN, LOW);
-  delay(2);
+  delay(20);
   // Trigger Signal an
   digitalWrite(TRIG_PIN, HIGH);
-  delay(10);
+  delay(100);
   //Trigger Signal aus
   digitalWrite(TRIG_PIN, LOW);
   //Receive Echo

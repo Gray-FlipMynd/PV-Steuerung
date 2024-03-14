@@ -21,8 +21,8 @@ void loop() {
   // put your main code here, to run repeatedly:
 
   for (int i = 0; i < 180; i++) {  // 3 minutes = 180 seconds
-      analogWrite(R_PWM, 0);  // Change the value (0-255) for different speeds
-      analogWrite(L_PWM, 255);
+      analogWrite(R_PWM, 255);  // Change the value (0-255) for different speeds
+      analogWrite(L_PWM, 0);
       delay(1000);
     }
 

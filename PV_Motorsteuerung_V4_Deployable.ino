@@ -157,23 +157,32 @@ void loop()
   }
 }
 
-// Berechne den Abstand mittels USS
 float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
 {
-  //Trigger Signal aus
-  digitalWrite(TRIG_PIN, LOW);
-  delay(20);
-  // Trigger Signal an
-  digitalWrite(TRIG_PIN, HIGH);
-  delay(100);
-  //Trigger Signal aus
-  digitalWrite(TRIG_PIN, LOW);
-  //Receive Echo
-  long duration = pulseIn(ECHO_PIN, HIGH);
-  //Calculate distance
-  float distance_cm = duration * SOUND_SPEED / 2;
-  return distance_cm;
+  float total_distance = 0;
+  int num_measurements = 10; // Anzahl der Messungen
+
+  for(int i = 0; i < num_measurements; i++)
+  {
+    //Trigger Signal aus
+    digitalWrite(TRIG_PIN, LOW);
+    delay(5);
+    // Trigger Signal an
+    digitalWrite(TRIG_PIN, HIGH);
+    delay(20);
+    //Trigger Signal aus
+    digitalWrite(TRIG_PIN, LOW);
+    //Receive Echo
+    long duration = pulseIn(ECHO_PIN, HIGH);
+    //Calculate distance
+    float distance = duration * SOUND_SPEED / 2;
+    total_distance += distance;
+    delay(10); // kurze Pause zwischen den Messungen
+  }
+
+  return total_distance / num_measurements; // Durchschnittliche Entfernung zurückgeben
 }
+
 
 // Trun motor Clockwise
 void motor_R()

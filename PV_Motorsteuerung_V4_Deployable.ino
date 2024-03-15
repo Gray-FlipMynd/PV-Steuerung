@@ -15,6 +15,9 @@ RTC_DS3231 rtc;
 //Maximum Motorspeed
 #define MAXSPEED 255
 
+const int long TIMECHECK = 1000;
+unsigned long timecheck = 0.0;
+
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET  -1 // Reset pin # (or -1 if sharing Arduino reset pin)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
@@ -28,9 +31,6 @@ const int L_EN = 21;  //Pin 4
 // Pin definitions for USS
 const int TRIG_PIN = 17;
 const int ECHO_PIN = 16;
-
-// Voltage Measuring Analog PIN
-#define VOLTAGE_PIN 34 //A6
 
 void setup() 
 {
@@ -78,10 +78,18 @@ void loop()
   DateTime now = rtc.now(); 
   // Measure Distance
   float distance = distance_measure(TRIG_PIN, ECHO_PIN);
-
   
-  //OLED Display
-  oled(distance);
+
+  unsigned long clock = millis();
+  
+
+  if (clock - timecheck >= 1000)
+  {
+     //OLED Display
+      oled(distance);
+      timecheck = clock;
+  }
+ 
 
   // Check if it's 12:00, 14:00, or 15:00
   if (now.hour() == 12 && now.minute() == 0)
@@ -91,7 +99,7 @@ void loop()
     while((distance_3 = distance_measure(TRIG_PIN, ECHO_PIN)) >= 25)
     {
       motor_R();
-      delay(10);
+      delay(5);
     }
     // Turn off the motor
     motor_stop();
@@ -102,10 +110,10 @@ void loop()
   {
     float distance_4 = distance;
     // Activate the motor for 3 minutes
-    while(distance_4 = distance_measure(TRIG_PIN, ECHO_PIN)>= 17)
+    while((distance_4 = distance_measure(TRIG_PIN, ECHO_PIN))>= 17)
     {
       motor_R();
-      delay(10);
+      delay(5);
     }
     // Turn off the motor
     motor_stop();  
@@ -116,10 +124,10 @@ void loop()
   {
     float distance_5 = distance;
       // Activate the motor for 3 minutes
-    while(distance_5 = distance_measure(TRIG_PIN, ECHO_PIN)>= 11)
+    while((distance_5 = distance_measure(TRIG_PIN, ECHO_PIN))>= 11)
     {
       motor_R();
-      delay(10);
+      delay(5);
     }
     // Turn off the motor
     motor_stop();  
@@ -130,11 +138,10 @@ void loop()
   {
     float distance_2 = distance;
     // Activate the motor for X minutes to turn it back until distance of 80cm is reached
-    while(distance_2 = distance_measure(TRIG_PIN, ECHO_PIN)<= 35)
+    while((distance_2 = distance_measure(TRIG_PIN, ECHO_PIN))<= 35)
     {  
       motor_L();  // Change the value (0-255) for different speeds on the left motor
-      oled(distance_2);
-      delay(10);
+      delay(5);
     }
     // Turn off the motor
     motor_stop();
@@ -144,7 +151,7 @@ void loop()
 float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
 {
   float total_distance = 0;
-  int num_measurements = 10; // Anzahl der Messungen
+  int num_measurements = 100; // Anzahl der Messungen
 
   for(int i = 0; i < num_measurements; i++)
   {
@@ -161,9 +168,8 @@ float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
     //Calculate distance
     float distance = duration * SOUND_SPEED / 2;
     total_distance += distance;
-    delay(10); // kurze Pause zwischen den Messungen
+    delay(5); // kurze Pause zwischen den Messungen
   }
-
   return total_distance / num_measurements; // Durchschnittliche Entfernung zurückgeben
 }
 
@@ -222,4 +228,3 @@ void oled(float distance)
   // Display text
   display.display();
 }
-

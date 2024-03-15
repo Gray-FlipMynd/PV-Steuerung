@@ -87,17 +87,11 @@ void loop()
   if (now.hour() == 12 && now.minute() == 0)
   {
     float distance_3 = distance;
-    if(distance >= 10.0)
-    {
       // Activate the motor for 3 minutes
-      while(distance_3 >= 25)
-      {
-        motor_R();
-        distance_3 = distance_measure(TRIG_PIN, ECHO_PIN);
-        oled(distance_3);
-        delay(100);
-      }
-     
+    while((distance_3 = distance_measure(TRIG_PIN, ECHO_PIN)) >= 25)
+    {
+      motor_R();
+      delay(10);
     }
     // Turn off the motor
     motor_stop();
@@ -107,16 +101,11 @@ void loop()
   if (now.hour() == 14 && now.minute() == 0)
   {
     float distance_4 = distance;
-    if(distance >= 10.0)
+    // Activate the motor for 3 minutes
+    while(distance_4 = distance_measure(TRIG_PIN, ECHO_PIN)>= 17)
     {
-      // Activate the motor for 3 minutes
-      while(distance_4 = distance_measure(TRIG_PIN, ECHO_PIN)>= 17)
-      {
-        motor_R();
-        oled(distance_4);
-        delay(100);
-      }
-     
+      motor_R();
+      delay(10);
     }
     // Turn off the motor
     motor_stop();  
@@ -126,16 +115,11 @@ void loop()
   if (now.hour() == 15 && now.minute() == 0)
   {
     float distance_5 = distance;
-    if(distance >= 10.0)
-    {
       // Activate the motor for 3 minutes
-      while(distance_5 = distance_measure(TRIG_PIN, ECHO_PIN)>= 11)
-      {
-        motor_R();
-        oled(distance_5);
-        delay(100);
-      }
-     
+    while(distance_5 = distance_measure(TRIG_PIN, ECHO_PIN)>= 11)
+    {
+      motor_R();
+      delay(10);
     }
     // Turn off the motor
     motor_stop();  
@@ -150,7 +134,7 @@ void loop()
     {  
       motor_L();  // Change the value (0-255) for different speeds on the left motor
       oled(distance_2);
-      delay(100);
+      delay(10);
     }
     // Turn off the motor
     motor_stop();
@@ -166,10 +150,10 @@ float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
   {
     //Trigger Signal aus
     digitalWrite(TRIG_PIN, LOW);
-    delay(5);
+    delay(2);
     // Trigger Signal an
     digitalWrite(TRIG_PIN, HIGH);
-    delay(20);
+    delay(5);
     //Trigger Signal aus
     digitalWrite(TRIG_PIN, LOW);
     //Receive Echo

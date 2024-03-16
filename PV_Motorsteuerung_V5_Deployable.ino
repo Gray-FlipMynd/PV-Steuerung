@@ -96,9 +96,17 @@ void loop()
   if (now.hour() == 12 && now.minute() == 0)
   {
       // Activate the motor for 3 minutes
-    while((distance = distance_measure(TRIG_PIN, ECHO_PIN)) >= 25)
+    while(distance >= 25)
     {
       motor_R();
+      if (clock - timecheck >= INTERVALL)
+      {
+        //distance measure
+        distance = distance_measure(TRIG_PIN, ECHO_PIN);
+        //OLED Display
+        oled(distance);
+        timecheck = clock;
+      }
       delay(5);
     }
     // Turn off the motor
@@ -109,9 +117,17 @@ void loop()
   if (now.hour() == 14 && now.minute() == 0)
   {
     // Activate the motor for 3 minutes
-    while((distance = distance_measure(TRIG_PIN, ECHO_PIN))>= 17)
+    while(distance >= 17)
     {
       motor_R();
+      if (clock - timecheck >= INTERVALL)
+      {
+        //distance measure
+        distance = distance_measure(TRIG_PIN, ECHO_PIN);
+        //OLED Display
+        oled(distance);
+        timecheck = clock;
+      }
       delay(5);
     }
     // Turn off the motor
@@ -122,9 +138,17 @@ void loop()
   if (now.hour() == 15 && now.minute() == 0)
   {
       // Activate the motor for 3 minutes
-    while((distance = distance_measure(TRIG_PIN, ECHO_PIN))>= 11)
+    while(distance >= 11)
     {
       motor_R();
+      if (clock - timecheck >= INTERVALL)
+      {
+        //distance measure
+        distance = distance_measure(TRIG_PIN, ECHO_PIN);
+        //OLED Display
+        oled(distance);
+        timecheck = clock;
+      }
       delay(5);
     }
     // Turn off the motor
@@ -149,7 +173,7 @@ void loop()
 float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
 {
   float total_distance = 0;
-  int num_measurements = 100; // Anzahl der Messungen
+  int num_measurements = 10; // Anzahl der Messungen
 
   for(int i = 0; i < num_measurements; i++)
   {

@@ -52,7 +52,7 @@ void loop() {
 
   for (int i = 0; i < numSensors-2; i++) 
   {
-    if (sensors[i].getCurrent() <= 0.75)
+    if (sensors[i].getCurrent() <= 800)
     {
       dataFile.print(now.hour(), DEC);
       dataFile.print(':');
@@ -60,13 +60,17 @@ void loop() {
       dataFile.print(':');
       dataFile.print(now.second(), DEC);
       dataFile.print(':');
+      dataFile.print(now.day(), DEC);
+      dataFile.print(':');
+      dataFile.print(now.month(), DEC);
+      dataFile.print(':');
       dataFile.print(now.year(), DEC);
       dataFile.print(" , ");
       dataFile.print("I_Modul_");
       dataFile.print(i + 1);
       dataFile.print(",");
       dataFile.print(sensors[i].getCurrent(), 3);
-      dataFile.println(", A");
+      dataFile.println(", mA");
     }
   }
 

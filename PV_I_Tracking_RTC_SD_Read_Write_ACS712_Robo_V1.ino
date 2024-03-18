@@ -50,24 +50,24 @@ void loop() {
   // Read the current time
   DateTime now = rtc.now();
 
-  for (int i = 0; i < numSensors; i++) {
-    Serial.print("I_Modul_");
-    Serial.print(i + 1);
-    Serial.print(",");
-    Serial.print(sensors[i].getCurrent(), 3);
-    Serial.println(", A");
-
-    dataFile.print(now.hour(), DEC);
-    dataFile.print(':');
-    dataFile.print(now.minute(), DEC);
-    dataFile.print(':');
-    dataFile.print(now.second(), DEC);
-    dataFile.print(" , ");
-    dataFile.print("I_Modul_");
-    dataFile.print(i + 1);
-    dataFile.print(",");
-    dataFile.print(sensors[i].getCurrent(), 3);
-    dataFile.println(", A");
+  for (int i = 0; i < numSensors-2; i++) 
+  {
+    if (sensors[i].getCurrent() <= 0.75)
+    {
+      dataFile.print(now.hour(), DEC);
+      dataFile.print(':');
+      dataFile.print(now.minute(), DEC);
+      dataFile.print(':');
+      dataFile.print(now.second(), DEC);
+      dataFile.print(':');
+      dataFile.print(now.year(), DEC);
+      dataFile.print(" , ");
+      dataFile.print("I_Modul_");
+      dataFile.print(i + 1);
+      dataFile.print(",");
+      dataFile.print(sensors[i].getCurrent(), 3);
+      dataFile.println(", A");
+    }
   }
 
   // Close the file

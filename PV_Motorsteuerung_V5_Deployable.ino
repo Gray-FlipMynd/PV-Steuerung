@@ -2,7 +2,6 @@
 #include <RTClib.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <SPI.h>
 
 RTC_DS3231 rtc;
 
@@ -10,13 +9,14 @@ RTC_DS3231 rtc;
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
 //define sound speed in cm/uS
-#define SOUND_SPEED 0.034
+#define SOUND_SPEED 0.0343
 
 //Maximum Motorspeed
 #define MAXSPEED 255
 
 //Uninteruptable break via millis
 const int long INTERVALL = 1000;
+const int long INTERVALL_2 = 10000;
 unsigned long timecheck = 0.0;
 
 //distance measure var
@@ -96,13 +96,12 @@ void loop()
   if (now.hour() == 12 && now.minute() == 0)
   {
       // Activate the motor for 3 minutes
-    while(distance >= 25)
+    while(distance = distance_measure(TRIG_PIN, ECHO_PIN) >= 25)
     {
       motor_R();
-      if (clock - timecheck >= INTERVALL)
+      if (clock - timecheck >= INTERVALL_2)
       {
         //distance measure
-        distance = distance_measure(TRIG_PIN, ECHO_PIN);
         //OLED Display
         oled(distance);
         timecheck = clock;
@@ -117,13 +116,12 @@ void loop()
   if (now.hour() == 14 && now.minute() == 0)
   {
     // Activate the motor for 3 minutes
-    while(distance >= 17)
+    while(distance = distance_measure(TRIG_PIN, ECHO_PIN) >= 17)
     {
       motor_R();
-      if (clock - timecheck >= INTERVALL)
+      if (clock - timecheck >= INTERVALL_2)
       {
         //distance measure
-        distance = distance_measure(TRIG_PIN, ECHO_PIN);
         //OLED Display
         oled(distance);
         timecheck = clock;
@@ -138,13 +136,12 @@ void loop()
   if (now.hour() == 15 && now.minute() == 0)
   {
       // Activate the motor for 3 minutes
-    while(distance >= 11)
+    while(distance = distance_measure(TRIG_PIN, ECHO_PIN) >= 11.0)
     {
       motor_R();
-      if (clock - timecheck >= INTERVALL)
+      if (clock - timecheck >= INTERVALL_2)
       {
         //distance measure
-        distance = distance_measure(TRIG_PIN, ECHO_PIN);
         //OLED Display
         oled(distance);
         timecheck = clock;
@@ -159,7 +156,7 @@ void loop()
   if (now.hour() == 20 && now.minute() == 0) 
   {
     // Activate the motor for X minutes to turn it back until distance of 80cm is reached
-    while((distance = distance_measure(TRIG_PIN, ECHO_PIN))<= 35)
+    while((distance = distance_measure(TRIG_PIN, ECHO_PIN))<= 35.0)
     {  
       motor_L();  // Change the value (0-255) for different speeds on the left motor
       delay(5);
@@ -169,11 +166,11 @@ void loop()
   }
 }
 
-//func distance measure with 100 points avg
+//func distance measure with 1000 points avg
 float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
 {
   float total_distance = 0;
-  int num_measurements = 10; // Anzahl der Messungen
+  int num_measurements = 1000; // Anzahl der Messungen
 
   for(int i = 0; i < num_measurements; i++)
   {
@@ -192,7 +189,7 @@ float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
     total_distance += distance;
     delay(5); // kurze Pause zwischen den Messungen
   }
-  return total_distance / num_measurements; // Durchschnittliche Entfernung zurückgeben
+  return (total_distance/num_measurements); // Durchschnittliche Entfernung zurückgeben
 }
 
 

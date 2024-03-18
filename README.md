@@ -12,3 +12,4 @@ Currently in USE -Motor Control:
 - DC Motor with gear Set to control The Position of the PV - Panel.
 - USS HC-SR04 for distance measuring and controlling the Positon of PV -Panel for optimal sunray positioning
 - RTC - Time based control for additional sunray positioning
+- OLED Display SSD1306 for displaying the measurements in RealTime

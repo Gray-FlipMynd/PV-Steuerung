@@ -109,6 +109,9 @@ void loop()
       }
       delay(5);
     }
+
+    // Set the ESP to sleep for 3400 s
+    esp_deep_sleep(3400e6);
     // Turn off the motor
     motor_stop();
   }
@@ -126,7 +129,11 @@ void loop()
     }
     // Turn off the motor
     motor_stop();
+    // Set the ESP to sleep for 15 hours
+    esp_deep_sleep(54000e6);
   }
+
+  
 }
 
 // Func distance measure with 1000 points avg

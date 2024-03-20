@@ -13,3 +13,4 @@ Currently in USE -Motor Control:
 - USS HC-SR04 for distance measuring and controlling the Positon of PV -Panel for optimal sunray positioning
 - RTC - Time based control for additional sunray positioning
 - OLED Display SSD1306 for displaying the measurements in RealTime
+- added deepsleep functionality to safe resources over night

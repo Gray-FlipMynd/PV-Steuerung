@@ -1,5 +1,5 @@
 # PV-Steuerung
-C++ Code for ESP32/Arduino based automation for Suntracking
+C++ Code for ESP32/Arduino based automation for Suntracking and motorcontrol
 
 Currently in USE PV-Current tracking:
 

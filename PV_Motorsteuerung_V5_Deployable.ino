@@ -156,7 +156,7 @@ void loop()
   if (now.hour() == 20 && now.minute() == 0) 
   {
     // Activate the motor for X minutes to turn it back until distance of 80cm is reached
-    while((distance = distance_measure(TRIG_PIN, ECHO_PIN))<= 35.0)
+    while(distance = distance_measure(TRIG_PIN, ECHO_PIN)<= 35.0)
     {  
       motor_L();  // Change the value (0-255) for different speeds on the left motor
       delay(5);

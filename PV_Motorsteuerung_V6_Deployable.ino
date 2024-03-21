@@ -21,6 +21,10 @@ unsigned long timecheck = 0.0;
 
 // Distance measure variables
 float distance = 0.0;
+const int TARGET_DISTANCE_1 = 25;
+const int TARGET_DISTANCE_2 = 17;
+const int TARGET_DISTANCE_3 = 11;
+const int TARGET_DISTANCE_4 = 35;
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET -1 // Reset pin # (or -1 if sharing Arduino reset pin)
@@ -89,14 +93,9 @@ void loop()
   }
 
   // Check if it's 12:00, 14:00, or 15:00
-  if ((now.hour() == 12 || now.hour() == 14 || now.hour() == 15) && now.minute() == 0) 
+  if (now.hour() == 12  && now.minute() == 0) 
   {
-    // Activate the motor for 3 minutes
-    float target_distance = 25.0;
-    if (now.hour() == 14) target_distance = 17.0;
-    else if (now.hour() == 15) target_distance = 11.0;
-
-    while (distance >= target_distance) 
+    while (distance >= TARGET_DISTANCE_1) 
     {
       motor_R();
       if (millis() - timecheck >= INTERVALL_2) 
@@ -109,9 +108,49 @@ void loop()
       }
       delay(5);
     }
-
-    // Set the ESP to sleep for 3400 s
     esp_deep_sleep(3400e6);
+    // Turn off the motor
+    motor_stop();
+  }
+
+  // Check if it's 12:00, 14:00, or 15:00
+  if (now.hour() == 14  && now.minute() == 0) 
+  {
+    while (distance >= TARGET_DISTANCE_2) 
+    {
+      motor_R();
+      if (millis() - timecheck >= INTERVALL_2) 
+      {
+        // Distance measure
+        distance = distance_measure(TRIG_PIN, ECHO_PIN);
+        // OLED Display
+        oled(distance);
+        timecheck = millis();
+      }
+      delay(5);
+    }
+    esp_deep_sleep(3400e6);
+    // Turn off the motor
+    motor_stop();
+  }
+
+  // Check if it's 12:00, 14:00, or 15:00
+  if (now.hour() == 15  && now.minute() == 0) 
+  {
+    while (distance >= TARGET_DISTANCE_3) 
+    {
+      motor_R();
+      if (millis() - timecheck >= INTERVALL_2) 
+      {
+        // Distance measure
+        distance = distance_measure(TRIG_PIN, ECHO_PIN);
+        // OLED Display
+        oled(distance);
+        timecheck = millis();
+      }
+      delay(5);
+    }
+    esp_deep_sleep(14400e6);
     // Turn off the motor
     motor_stop();
   }
@@ -120,20 +159,23 @@ void loop()
   if (now.hour() == 20 && now.minute() == 0) 
   {
     // Activate the motor for X minutes to turn it back until distance of 80cm is reached
-    while (distance <= 35.0) 
+    while (distance <= TARGET_DISTANCE_4) 
     {
-      // Distance measure
-      distance = distance_measure(TRIG_PIN, ECHO_PIN);
       motor_L();  // Change the value (0-255) for different speeds on the left motor
+      if (millis() - timecheck >= INTERVALL_2) 
+      {
+        // Distance measure
+        distance = distance_measure(TRIG_PIN, ECHO_PIN);
+        // OLED Display
+        oled(distance);
+        timecheck = millis();
+      }
       delay(5);
     }
     // Turn off the motor
     motor_stop();
-    // Set the ESP to sleep for 15 hours
     esp_deep_sleep(54000e6);
   }
-
-  
 }
 
 // Func distance measure with 1000 points avg

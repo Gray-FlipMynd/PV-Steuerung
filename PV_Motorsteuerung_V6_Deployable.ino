@@ -16,15 +16,15 @@ RTC_DS3231 rtc;
 
 // Uninterruptible break via millis
 const long INTERVALL = 1000;
-const long INTERVALL_2 = 10000;
+const long INTERVALL_2 = 5000;
 unsigned long timecheck = 0.0;
 
 // Distance measure variables
 float distance = 0.0;
-const int TARGET_DISTANCE_1 = 25;
-const int TARGET_DISTANCE_2 = 17;
-const int TARGET_DISTANCE_3 = 11;
-const int TARGET_DISTANCE_4 = 35;
+const float TARGET_DISTANCE_1 = 25.0;
+const float TARGET_DISTANCE_2 = 17.0;
+const float TARGET_DISTANCE_3 = 11.0;
+const float TARGET_DISTANCE_4 = 34.0;
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET -1 // Reset pin # (or -1 if sharing Arduino reset pin)
@@ -83,7 +83,7 @@ void loop()
 
   // Uninterruptible break
   unsigned long clock = millis();
-  if (clock - timecheck >= INTERVALL) 
+  if (clock - timecheck >= INTERVALL_2) 
   {
     // Distance measure
     distance = distance_measure(TRIG_PIN, ECHO_PIN);
@@ -98,14 +98,10 @@ void loop()
     while (distance >= TARGET_DISTANCE_1) 
     {
       motor_R();
-      if (millis() - timecheck >= INTERVALL_2) 
-      {
-        // Distance measure
-        distance = distance_measure(TRIG_PIN, ECHO_PIN);
-        // OLED Display
-        oled(distance);
-        timecheck = millis();
-      }
+      // Distance measure
+      distance = distance_measure(TRIG_PIN, ECHO_PIN);
+      // OLED Display
+      oled(distance);
       delay(5);
     }
     esp_deep_sleep(3400e6);
@@ -119,14 +115,10 @@ void loop()
     while (distance >= TARGET_DISTANCE_2) 
     {
       motor_R();
-      if (millis() - timecheck >= INTERVALL_2) 
-      {
-        // Distance measure
-        distance = distance_measure(TRIG_PIN, ECHO_PIN);
-        // OLED Display
-        oled(distance);
-        timecheck = millis();
-      }
+      // Distance measure
+      distance = distance_measure(TRIG_PIN, ECHO_PIN);
+      // OLED Display
+      oled(distance);
       delay(5);
     }
     esp_deep_sleep(3400e6);
@@ -140,14 +132,10 @@ void loop()
     while (distance >= TARGET_DISTANCE_3) 
     {
       motor_R();
-      if (millis() - timecheck >= INTERVALL_2) 
-      {
-        // Distance measure
-        distance = distance_measure(TRIG_PIN, ECHO_PIN);
-        // OLED Display
-        oled(distance);
-        timecheck = millis();
-      }
+      // Distance measure
+      distance = distance_measure(TRIG_PIN, ECHO_PIN);
+      // OLED Display
+      oled(distance);      
       delay(5);
     }
     esp_deep_sleep(14400e6);
@@ -162,14 +150,10 @@ void loop()
     while (distance <= TARGET_DISTANCE_4) 
     {
       motor_L();  // Change the value (0-255) for different speeds on the left motor
-      if (millis() - timecheck >= INTERVALL_2) 
-      {
-        // Distance measure
-        distance = distance_measure(TRIG_PIN, ECHO_PIN);
-        // OLED Display
-        oled(distance);
-        timecheck = millis();
-      }
+      // Distance measure
+      distance = distance_measure(TRIG_PIN, ECHO_PIN);
+      // OLED Display
+      oled(distance);
       delay(5);
     }
     // Turn off the motor

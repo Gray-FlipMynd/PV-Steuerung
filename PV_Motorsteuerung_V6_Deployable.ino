@@ -171,20 +171,20 @@ float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
   for (int i = 0; i < num_measurements; i++) {
     // Trigger Signal off
     digitalWrite(TRIG_PIN, LOW);
-    delayMicroseconds(2);
+    delay(2);
     // Trigger Signal on
     digitalWrite(TRIG_PIN, HIGH);
-    delayMicroseconds(10);
+    delay(5);
     // Trigger Signal off
     digitalWrite(TRIG_PIN, LOW);
     // Receive Echo
     long duration = pulseIn(ECHO_PIN, HIGH);
     // Calculate distance
-    float distance = duration * SOUND_SPEED / 2;
+    float distance = /duration * SOUND_SPEED* 0.5);
     total_distance += distance;
-    delayMicroseconds(5); // Short pause between measurements
+    delay(5); // Short pause between measurements
   }
-  return (total_distance / num_measurements); // Return average distance
+  return (total_distance* (1/num_measurements)); // Return average distance
 }
 
 // Turn motor Clockwise

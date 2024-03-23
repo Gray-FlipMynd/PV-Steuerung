@@ -14,6 +14,7 @@ RTC_DS3231 rtc;
 // Maximum Motor speed
 #define MAX_SPEED 255
 
+// CONSTANTS for moving avg
 #define NUM_MEASUREMENTS 100
 #define TRIGGER_DELAY_MICROSECONDS 1000
 #define MOVING_AVERAGE_WINDOW_SIZE 10

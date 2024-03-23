@@ -14,8 +14,12 @@ RTC_DS3231 rtc;
 // Maximum Motor speed
 #define MAX_SPEED 255
 
+#define NUM_MEASUREMENTS 100
+#define TRIGGER_DELAY_MICROSECONDS 1000
+#define MOVING_AVERAGE_WINDOW_SIZE 10
+
 // Uninterruptible break via millis
-const long INTERVALL = 1000;
+const long INTERVALL = 1;
 const long INTERVALL_2 = 5000;
 unsigned long timecheck = 0.0;
 
@@ -162,30 +166,41 @@ void loop()
   }
 }
 
-// Func distance measure with 1000 points avg
 float distance_measure(const int TRIG_PIN, const int ECHO_PIN) 
 {
   float total_distance = 0;
-  int num_measurements = 1000; // Number of measurements
+  float measurements[MOVING_AVERAGE_WINDOW_SIZE]; // Array to store recent measurements
+  int measurement_index = 0;
 
-  for (int i = 0; i < num_measurements; i++) {
+  for (int i = 0; i < NUM_MEASUREMENTS; i++) {
     // Trigger Signal off
     digitalWrite(TRIG_PIN, LOW);
-    delay(2);
+    delayMicroseconds(2);
     // Trigger Signal on
     digitalWrite(TRIG_PIN, HIGH);
-    delay(5);
+    delayMicroseconds(TRIGGER_DELAY_MICROSECONDS);
     // Trigger Signal off
     digitalWrite(TRIG_PIN, LOW);
     // Receive Echo
     long duration = pulseIn(ECHO_PIN, HIGH);
     // Calculate distance
-    float distance = (duration * SOUND_SPEED* (1/2));
-    total_distance += distance;
+    float distance = duration * SOUND_SPEED / 2;
+    
+    // Store the measurement in the array
+    measurements[measurement_index] = distance;
+    measurement_index = (measurement_index + 1) % MOVING_AVERAGE_WINDOW_SIZE;
+
+    // Calculate moving average
+    total_distance = 0;
+    for (int j = 0; j < MOVING_AVERAGE_WINDOW_SIZE; j++) {
+      total_distance += measurements[j];
+    }
+    total_distance /= MOVING_AVERAGE_WINDOW_SIZE;
+
     delay(5); // Short pause between measurements
   }
-  return (total_distance* (1/num_measurements)); // Return average distance
-}
+  return total_distance;
+} 
 
 // Turn motor Clockwise
 void motor_R() 

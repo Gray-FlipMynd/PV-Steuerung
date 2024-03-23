@@ -180,7 +180,7 @@ float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
     // Receive Echo
     long duration = pulseIn(ECHO_PIN, HIGH);
     // Calculate distance
-    float distance = (duration * SOUND_SPEED* 0.5);
+    float distance = (duration * SOUND_SPEED* (1/2));
     total_distance += distance;
     delay(5); // Short pause between measurements
   }

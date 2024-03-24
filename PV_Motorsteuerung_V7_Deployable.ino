@@ -26,10 +26,6 @@ unsigned long timecheck = 0.0;
 
 // Distance measure variables
 float distance = 0.0;
-const int TARGET_DISTANCE_1 = 25;
-const int TARGET_DISTANCE_2 = 17;
-const int TARGET_DISTANCE_3 = 11;
-const int TARGET_DISTANCE_4 = 35;
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET -1 // Reset pin # (or -1 if sharing Arduino reset pin)

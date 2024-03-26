@@ -9,7 +9,7 @@ RTC_DS3231 rtc;
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
 // Define sound speed in cm/uS
-#define SOUND_SPEED 0.0343
+#define SOUND_SPEED 0.03432
 
 // Maximum Motor speed
 #define MAX_SPEED 255

@@ -87,7 +87,6 @@ void loop()
   unsigned long clock = millis();
   if (clock - timecheck >= INTERVALL_2) 
   {
-    Serial.println(clock-timecheck);
     // Distance measure
     distance = distance_measure(TRIG_PIN, ECHO_PIN);
     // OLED Display
@@ -106,23 +105,21 @@ void loop()
       case 1400:
       case 1500:
         // Activate the motor for 3 minutes
-        if (now.hour() == 12) target_distance = 25.0;
-        else if (now.hour() == 14) target_distance = 17.0;
-        else if (now.hour() == 15) target_distance = 11.0;
+        if (now.hour() == 13) target_distance = 24.0;
+        else if (now.hour() == 14) target_distance = 16.0;
+        else if (now.hour() == 15) target_distance = 10.0;
 
         while (distance >= target_distance) 
         {
-            motor_R();
-            // Distance measure
-            distance = distance_measure(TRIG_PIN, ECHO_PIN);
-            // OLED Display
-            oled(distance);
-            delay(5);
+          motor_R();
+          delay(1000);
+          distance = distance_measure(TRIG_PIN, ECHO_PIN);
+          // OLED Display
+          oled(distance);
         }
         // Turn off the motor
         motor_stop();
         //test
-        Serial.println("case closed");
         esp_deep_sleep(3400e6);  // Sleep for approximately 3400 seconds (56 minutes)
         break; // Don't forget to add a break statement
 
@@ -154,43 +151,25 @@ void loop()
 
 }
 
-// Func distance measure with 100 points avg and moving avg of last 10
-float distance_measure(const int TRIG_PIN, const int ECHO_PIN) 
+//func distance measure with 1000 points avg
+float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
 {
-  float total_distance = 0;
-  float measurements[MOVING_AVERAGE_WINDOW_SIZE]; // Array to store recent measurements
-  int measurement_index = 0;
-
-  for (int i = 0; i < NUM_MEASUREMENTS; i++) {
-    // Trigger Signal off
-    digitalWrite(TRIG_PIN, LOW);
-    delayMicroseconds(2);
-    // Trigger Signal on
-    digitalWrite(TRIG_PIN, HIGH);
-    delayMicroseconds(TRIGGER_DELAY_MICROSECONDS);
-    // Trigger Signal off
-    digitalWrite(TRIG_PIN, LOW);
-    // Receive Echo
-    long duration = pulseIn(ECHO_PIN, HIGH);
-    // Calculate distance
-    float distance = duration * SOUND_SPEED / 2;
-    
-    // Store the measurement in the array
-    measurements[measurement_index] = distance;
-    measurement_index = (measurement_index + 1) % MOVING_AVERAGE_WINDOW_SIZE;
-
-    // Calculate moving average
-    total_distance = 0;
-    for (int j = 0; j < MOVING_AVERAGE_WINDOW_SIZE; j++) {
-      total_distance += measurements[j];
-    }
-    total_distance /= MOVING_AVERAGE_WINDOW_SIZE;
-
-    delay(5); // Short pause between measurements
-  }
-  return total_distance;
-} 
-
+  //Trigger Signal aus
+  digitalWrite(TRIG_PIN, LOW);
+  delay(5);
+  // Trigger Signal an
+  digitalWrite(TRIG_PIN, HIGH);
+  delay(5);
+  //Trigger Signal aus
+  digitalWrite(TRIG_PIN, LOW);
+  //Receive Echo
+  long duration = pulseIn(ECHO_PIN, HIGH);
+  //Calculate distance
+  float distance = duration * SOUND_SPEED / 2;
+  delay(1); // kurze Pause zwischen den Messungen
+  
+  return distance; // Durchschnittliche Entfernung zurückgeben
+}
 // Turn motor Clockwise
 void motor_R() 
 {

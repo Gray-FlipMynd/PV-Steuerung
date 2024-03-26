@@ -159,13 +159,13 @@ float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
   delay(5);
   // Trigger Signal an
   digitalWrite(TRIG_PIN, HIGH);
-  delay(5);
+  delayMicroseconds(10);
   //Trigger Signal aus
   digitalWrite(TRIG_PIN, LOW);
   //Receive Echo
   long duration = pulseIn(ECHO_PIN, HIGH);
   //Calculate distance
-  float distance = duration * SOUND_SPEED / 2;
+  float distance = (duration/2) * SOUND_SPEED;
   delay(1); // kurze Pause zwischen den Messungen
   
   return distance; // Durchschnittliche Entfernung zurückgeben

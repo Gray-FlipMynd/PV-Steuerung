@@ -154,7 +154,7 @@ void loop()
 
 }
 
-// Func distance measure with 1000 points avg
+// Func distance measure with 100 points avg and moving avg of last 10
 float distance_measure(const int TRIG_PIN, const int ECHO_PIN) 
 {
   float total_distance = 0;

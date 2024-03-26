@@ -101,21 +101,21 @@ void loop()
 
   switch (hourMinute) 
   {
-      case 1200:
+      case 1300:
       case 1400:
       case 1500:
         // Activate the motor for 3 minutes
         if (now.hour() == 13) target_distance = 24.0;
         else if (now.hour() == 14) target_distance = 16.0;
-        else if (now.hour() == 15) target_distance = 10.0;
+        else if (now.hour() == 16) target_distance = 10.0;
 
         while (distance >= target_distance) 
         {
           motor_R();
-          delay(1000);
           distance = distance_measure(TRIG_PIN, ECHO_PIN);
           // OLED Display
           oled(distance);
+          delay(5);
         }
         // Turn off the motor
         motor_stop();
@@ -166,7 +166,7 @@ float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
   long duration = pulseIn(ECHO_PIN, HIGH);
   //Calculate distance
   float distance = (duration/2) * SOUND_SPEED;
-  delay(1); // kurze Pause zwischen den Messungen
+  delay(500); // kurze Pause zwischen den Messungen
   
   return distance; // Durchschnittliche Entfernung zurückgeben
 }

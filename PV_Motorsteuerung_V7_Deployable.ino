@@ -92,6 +92,7 @@ void loop()
     // OLED Display
     oled(distance);
     timecheck = clock;
+    Serial.println(distance);
   }
 
   // Combine hour and minute into a single value
@@ -101,17 +102,27 @@ void loop()
 
   switch (hourMinute) 
   {
-      case 1300:
+      case 1200:
       case 1400:
       case 1500:
         // Activate the motor for 3 minutes
-        if (now.hour() == 13) target_distance = 24.0;
-        else if (now.hour() == 14) target_distance = 16.0;
-        else if (now.hour() == 16) target_distance = 10.0;
+        if (now.hour() == 12) target_distance = 26.0;
+        else if (now.hour() == 14) target_distance = 20.0;
+        else if (now.hour() == 15) target_distance = 14.0;
 
-        while (distance >= target_distance) 
+        while (distance >= target_distance)  //achtung
         {
-          motor_R();
+          delay(5);
+
+          for(int i=0; i < 20; i++)
+          {
+            delay(5);
+            motor_R(); //ACHTUNG
+            delay(1000);
+          }
+
+          motor_stop();
+          delay(4000);
           distance = distance_measure(TRIG_PIN, ECHO_PIN);
           // OLED Display
           oled(distance);
@@ -120,25 +131,32 @@ void loop()
         // Turn off the motor
         motor_stop();
         //test
-        esp_deep_sleep(3400e6);  // Sleep for approximately 3400 seconds (56 minutes)
+        //esp_deep_sleep(3400e6);  // Sleep for approximately 3400 seconds (56 minutes)
         break; // Don't forget to add a break statement
 
       case 2000:
         // Activate the motor for 3 minutes
         target_distance = 35.0;
-        while (distance <= target_distance) 
+         while (distance <= target_distance)  //achtung
         {
-            motor_L();
-           
-            // Distance measure
-            distance = distance_measure(TRIG_PIN, ECHO_PIN);
-            // OLED Display
-            oled(distance);
+          delay(5);
+
+          for(int i=0; i < 20; i++)
+          {
             delay(5);
+            motor_L(); //ACHTUNG
+            delay(1000);
+          }
+          motor_stop();
+          delay(4000);
+          distance = distance_measure(TRIG_PIN, ECHO_PIN);
+          // OLED Display
+          oled(distance);
+          delay(5);
         }
         // Turn off the motor
         motor_stop();
-        esp_deep_sleep(61000e6);  // Sleep for approximately 3500 seconds (58 minutes)
+        esp_deep_sleep(51000e6);  // Sleep for approximately 3500 seconds (58 minutes)
         break; // Don't forget to add a break statement
 
       default:
@@ -152,23 +170,33 @@ void loop()
 }
 
 //func distance measure with 1000 points avg
-float distance_measure(const int TRIG_PIN, const int ECHO_PIN)
+unsigned long distance_measure(const int TRIG_PIN, const int ECHO_PIN)
 {
   //Trigger Signal aus
   digitalWrite(TRIG_PIN, LOW);
   delay(5);
   // Trigger Signal an
   digitalWrite(TRIG_PIN, HIGH);
-  delayMicroseconds(10);
+  delay(0.1);
   //Trigger Signal aus
   digitalWrite(TRIG_PIN, LOW);
   //Receive Echo
-  long duration = pulseIn(ECHO_PIN, HIGH);
+  unsigned long duration = pulseIn(ECHO_PIN, HIGH);
+
+  Serial.println(duration);
   //Calculate distance
-  float distance = (duration/2) * SOUND_SPEED;
+  unsigned long distance = (duration/2) * SOUND_SPEED;
   delay(500); // kurze Pause zwischen den Messungen
   
-  return distance; // Durchschnittliche Entfernung zurückgeben
+  //if(distance <= 10.00)
+  //{
+    //return (distance+30);
+  //}
+  //else
+  //{
+    return distance; // Durchschnittliche Entfernung zurückgeben
+  //}
+  
 }
 // Turn motor Clockwise
 void motor_R() 

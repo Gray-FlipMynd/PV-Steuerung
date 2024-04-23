@@ -17,7 +17,6 @@ RTC_DS3231 rtc;
 //Moving avg constans
 #define NUM_MEASUREMENTS 100
 #define TRIGGER_DELAY_MICROSECONDS 1000
-#define MOVING_AVERAGE_WINDOW_SIZE 10
 
 // Uninterruptible break via millis
 const long INTERVALL = 1;
@@ -117,7 +116,7 @@ void loop()
           for(int i=0; i < 20; i++)
           {
             delay(5);
-            motor_R(); //ACHTUNG
+            motor_R(); 
             delay(1000);
           }
 
@@ -130,7 +129,6 @@ void loop()
         }
         // Turn off the motor
         motor_stop();
-        //test
         //esp_deep_sleep(3400e6);  // Sleep for approximately 3400 seconds (56 minutes)
         break; // Don't forget to add a break statement
 
@@ -156,12 +154,10 @@ void loop()
         }
         // Turn off the motor
         motor_stop();
-        esp_deep_sleep(51000e6);  // Sleep for approximately 3500 seconds (58 minutes)
-        break; // Don't forget to add a break statement
+        esp_deep_sleep(51000e6);  // Sleep
+        break; 
 
       default:
-          // Handle other hours and minutes if needed
-          // Here, you can put the microcontroller to sleep
           //esp_deep_sleep(3400e6); // Sleep for 3600 seconds (1 hour) for example
           break;
   }
@@ -187,16 +183,8 @@ unsigned long distance_measure(const int TRIG_PIN, const int ECHO_PIN)
   //Calculate distance
   unsigned long distance = (duration/2) * SOUND_SPEED;
   delay(500); // kurze Pause zwischen den Messungen
-  
-  //if(distance <= 10.00)
-  //{
-    //return (distance+30);
-  //}
-  //else
-  //{
-    return distance; // Durchschnittliche Entfernung zurückgeben
-  //}
-  
+
+  return distance;   
 }
 // Turn motor Clockwise
 void motor_R() 

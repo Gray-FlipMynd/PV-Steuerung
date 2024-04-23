@@ -54,7 +54,7 @@ void loop()
   // Only 2 Sensors in use atm
   for (int i = 0; i < numSensors-2; i++) 
   {
-    if (sensors[i].getCurrent() >= 800)
+    if (sensors[i].getCurrent() >= 0.8)
     {
       dataFile.print(now.hour(), DEC);
       dataFile.print(':');
